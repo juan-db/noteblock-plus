@@ -1,0 +1,9 @@
+modLoader="javafml"
+loaderVersion="[35,)"
+license="MIT"
+[[mods]]
+modId="noteblock"
+version="0.1"
+displayName="Noteblock++"
+authors="Juan de Bruin"
+description="Decrease the pitch of noteblocks with shift + right click."
