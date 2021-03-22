@@ -1,11 +1,12 @@
 package dev.debruin.noteblock;
 
 import net.minecraft.block.NoteBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.NoteBlockEvent;
-import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -17,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mod("noteblock")
-public class Noteblock
-{
+public class Noteblock {
     public Noteblock() {
         // Make sure the mod being absent on the other network side does not cause the client to
         // display the server as incompatible
@@ -36,15 +36,10 @@ public class Noteblock
     /** Note blocks that have been shift-clicked recently. */
     private final List<BlockPos> shiftClickedNoteBlocks = new ArrayList<>();
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onBlockUsed(PlayerInteractEvent.RightClickBlock event) {
         if (event.getWorld().isRemote) {
             return;
-        }
-
-    	// Not 100% sure about the result thing. Not sure if I need this but better safe than sorry?
-    	if (event.getUseBlock() == Event.Result.DENY) {
-    	    return;
         }
 
     	if (!(event.getWorld().getBlockState(event.getPos()).getBlock() instanceof NoteBlock)) {
@@ -55,13 +50,17 @@ public class Noteblock
             return;
         }
 
+        if (event.getItemStack() != ItemStack.EMPTY) {
+            return;
+        }
+
         shiftClickedNoteBlocks.add(event.getPos());
     }
 
     @SubscribeEvent
     public void onNoteChanged(NoteBlockEvent.Change event) {
-    	if (event.getWorld().isRemote()) {
-    	    return;
+        if (event.getWorld().isRemote()) {
+            return;
         }
 
         if (shiftClickedNoteBlocks.remove(event.getPos())) {

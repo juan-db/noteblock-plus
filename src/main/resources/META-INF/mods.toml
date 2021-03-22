@@ -1,6 +1,8 @@
 modLoader="javafml"
 loaderVersion="[35,)"
 license="MIT"
+issueTrackerURL="https://github.com/juan-db/noteblock-plus/issues"
+displayURL="https://github.com/juan-db/noteblock-plus"
 [[mods]]
 modId="noteblock"
 version="1.0"
